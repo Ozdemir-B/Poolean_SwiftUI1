@@ -11,10 +11,10 @@
 		E302DA2C28286B6A008E87F1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E302DA2B28286B6A008E87F1 /* GoogleService-Info.plist */; };
 		E31132EF280B7E4A00FD14D2 /* CustomerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31132EE280B7E4A00FD14D2 /* CustomerViewModel.swift */; };
 		E31568292805C32A008F7D46 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31568282805C32A008F7D46 /* UserViewModel.swift */; };
-		E324A175280DBFBD0026AAB6 /* DetailedCustomerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E324A174280DBFBD0026AAB6 /* DetailedCustomerView.swift */; };
 		E324A177280E997C0026AAB6 /* AddCustomerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E324A176280E997C0026AAB6 /* AddCustomerView.swift */; };
 		E33F13EF27F252A000FD31C5 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33F13EE27F252A000FD31C5 /* CustomViews.swift */; };
 		E33F13F127F253F900FD31C5 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33F13F027F253F900FD31C5 /* MainScreenView.swift */; };
+		E38D5121282BB36F00281219 /* DetailedCustomerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38D5120282BB36F00281219 /* DetailedCustomerView.swift */; };
 		E39610E627F2F4ED00E950D4 /* ExtensionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39610E527F2F4ED00E950D4 /* ExtensionsView.swift */; };
 		E39610E827F30A0B00E950D4 /* RegisterViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39610E727F30A0B00E950D4 /* RegisterViews.swift */; };
 		E39759BD27ED9AE50030EB96 /* Poolean_SwiftUI1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39759BC27ED9AE50030EB96 /* Poolean_SwiftUI1App.swift */; };
@@ -35,10 +35,10 @@
 		E302DA2B28286B6A008E87F1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E31132EE280B7E4A00FD14D2 /* CustomerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerViewModel.swift; sourceTree = "<group>"; };
 		E31568282805C32A008F7D46 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
-		E324A174280DBFBD0026AAB6 /* DetailedCustomerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedCustomerView.swift; sourceTree = SOURCE_ROOT; };
 		E324A176280E997C0026AAB6 /* AddCustomerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomerView.swift; sourceTree = "<group>"; };
 		E33F13EE27F252A000FD31C5 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		E33F13F027F253F900FD31C5 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainScreenView.swift; path = Poolean_SwiftUI1/Views/MainScreenView.swift; sourceTree = SOURCE_ROOT; };
+		E38D5120282BB36F00281219 /* DetailedCustomerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailedCustomerView.swift; path = /Users/ozdem/Desktop/development/xcode/Poolean_SwiftUI1/Poolean_SwiftUI1/Views/DetailedCustomerView.swift; sourceTree = "<absolute>"; };
 		E39610E527F2F4ED00E950D4 /* ExtensionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsView.swift; sourceTree = "<group>"; };
 		E39610E727F30A0B00E950D4 /* RegisterViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViews.swift; sourceTree = "<group>"; };
 		E39759B927ED9AE50030EB96 /* Poolean_SwiftUI1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Poolean_SwiftUI1.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,7 +145,7 @@
 		E3E5A05128030C2200B22629 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E324A174280DBFBD0026AAB6 /* DetailedCustomerView.swift */,
+				E38D5120282BB36F00281219 /* DetailedCustomerView.swift */,
 				E3F3C78828015883000CBB50 /* SettingsView.swift */,
 				E39610E527F2F4ED00E950D4 /* ExtensionsView.swift */,
 				E33F13EE27F252A000FD31C5 /* CustomViews.swift */,
@@ -285,7 +285,7 @@
 				E33F13F127F253F900FD31C5 /* MainScreenView.swift in Sources */,
 				E39610E627F2F4ED00E950D4 /* ExtensionsView.swift in Sources */,
 				E3E5A0502803072100B22629 /* UserModel.swift in Sources */,
-				E324A175280DBFBD0026AAB6 /* DetailedCustomerView.swift in Sources */,
+				E38D5121282BB36F00281219 /* DetailedCustomerView.swift in Sources */,
 				E39759CB27EDBCAA0030EB96 /* Network.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:DetailedCustomerView.swift">
+      location = "group:/Users/ozdem/Desktop/development/xcode/Poolean_SwiftUI1/Poolean_SwiftUI1/Views/DetailedCustomerView.swift">
    </FileRef>
    <FileRef
       location = "group:Poolean_SwiftUI1.xcodeproj">
