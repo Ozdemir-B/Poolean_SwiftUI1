@@ -1,0 +1,93 @@
+user types -> 0:admin , 1:reguler
+
+* every user will be able to see every customer.
+* only admins can change data on the database.
+* admins can make other users admin and reguler. (type field of the user will be change 1 to 0)
+* login will be done with "institution_id" and "password".
+
+
+-------------------------------!--------------Architecture------------------------------
+
+"institutions": {
+    "institution_id_1":{
+        "adsadadasd12312":{
+            "id":"adsadadasd12312",
+            "institution_id":"institution_id_1",
+            "name":"asd asdsa",
+            "password":"asdasdasd",
+            "email":"asdd@gmail.com",
+            "type":0
+        },
+        "adsadadasd12312":{
+            "id":"adsadadasd12312",
+            "institution_id":"institution_id_1",
+            "name":"asd asdsa",
+            "password":"asdasdasd",
+            "email":"asdd@gmail.com",
+            "type":1
+        }
+    },
+
+    "institution_id_2": {
+        "adsadadasd12312":{
+            "id":"adsadadasd12312",
+            "institution_id":"institution_id_2",
+            "name":"asd asdsa",
+            "password":"asdasdasd",
+            "email":"asdd@gmail.com",
+            "type":0
+        },
+        "adsadadasd12312":{
+            "id":"adsadadasd12312",
+            "institution_id":"institution_id_2",
+            "name":"asd asdsa",
+            "password":"asdasdasd",
+            "email":"asdd@gmail.com",
+            "type":1
+        }
+    }
+}
+
+
+"customers":{
+    "institution_id_1":{
+        "adsadadasd12312":{
+            "id":"adsadadasd12312",
+            "institution_id":"institution_id_1",
+            "name":"xcvcx xcv",
+            "age":12,
+            "weight":40,
+            "height":150,
+
+        },
+        "adsadadasd12312":{
+            "id":"adsadadasd12312",
+            "institution_id":"institution_id_1",
+            "name":"xcvcx xcv",
+            "age":12,
+            "weight":40,
+            "height":150,
+
+        }
+    },
+    "institution_id_2":{
+        {
+            "id":"adsadadasd12312",
+            "institution_id":"institution_id_2",
+            "name":"xcvcx xcv",
+            "age":12,
+            "weight":40,
+            "height":150,
+
+        },
+        {
+            "id":"adsadadasd12312",
+            "institution_id":"institution_id_2",
+            "name":"xcvcx xcv",
+            "age":12,
+            "weight":40,
+            "height":150,
+
+        }
+    }
+}

@@ -1,0 +1,44 @@
+Eklenecekler:
+	* Kullanıcının customerlar üzerinden arama yapabilmesi için bir arama çubuğu HomeScreenView'da scrollView'ın en üstüne eklenecek.
+	* MainScreenView a yeni bir 
+
+
+
+
+Login/Signin
+
+	* Login and Signin views basically should be just forms.
+	* After fields filled, given data will be returned to the main view and processed directly.(loging/fetching to/from firebase etc..)
+	* No navigation needed for Login / Signin views.
+
+
+MVVM
+	Model
+		* Model sadece veri tutar.
+
+	View
+		* View sadece render edilecek elemanları barındırır.
+
+	ViewModel
+		* ViewModel view ve model arasındaki bağantıyı sağlar.
+		* Model'in bir instancesi ViewModel'dedir.
+		* Aynı zamanda ViewModel'in instancesi main_app.swift içinde bir kez tanımlandıktan sonra diğer view'lara referansı gönderilir.
+
+
+
+*******
+
+ContentView, UserViewModel ile kontrol ediliyor. Yani UserModel, UserViewModel sınıfının bir izdüşümü. UserViewModel ise ContentView view'ının bir iz düşümü.
+
+Aslında bir uygulama, bir işi gerçekleştiren bir program. Uygulamanın arayüzü, kullanıcının Model ile belirlenen veri yapısını modifiye etmek için kullanılır sadece.
+Daha fazlası değil. Model güncellenirken kullanılan mantıksal yapılar ModelView ile belirlenir.
+Bir kullanıcı, kullanıcı adını güncellemek istediğinde uygulamada yeni kullanıcı adını yazar ve "güncelle" butonuna dokunur. Güncelle butonunun işlevi ModelView içinde belirlenmiştir.
+ModelView içersinde tanımlı Model i , View aracılığı ile değiştirilmesini sağlar. Ve ne olursa olsun, View aslında Model'de saklanan veriyi kullanıcıya göstermesi ve değiştirmesi için bir arayüzdür.
+
+
+ContentView içierisindeki custom viewler de aynı şekilde UserViewModel'İn bir izdüşümü.
+Sadece HomeScreenView içierisindeki CustomerView struct'ı bir CustomerModel'İn izdüşümü.
+Yani CustomerView aslında CustomerModel tipini modifiye etmek için kullanılan view.
+
+	
+	
