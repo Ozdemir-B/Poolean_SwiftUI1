@@ -36,7 +36,7 @@ struct CustomerModel:Codable, Identifiable{
         self.age = 12
         self.weight = 50
         self.height = 150
-        self.daysActive = [1,3,5]
+        self.daysActive = [1,3,6]
         self.monthsPayed = ["11-2021-200","5-2020-180","3-2022-250","4-2022-260"]
         //self.daysDone = []
     }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DetailedCustomerView: View {
     @Environment(\.presentationMode) var presentationMode
-    @State var selection:Int = 1
+    @State var selection:Int = 0
     @StateObject var userViewModel:UserViewModel
     @Binding var customerModel:CustomerModel
     @State var tempModel:CustomerModel = CustomerModel()
@@ -31,6 +31,18 @@ struct DetailedCustomerView: View {
     }
     
     
+    //func removeFromArray<T>(array:[T],item:T){}
+    
+    func removeDay(dayNumber:Int){
+        var index:Int = 0
+        for d in self.tempModel.daysActive{
+            if d == dayNumber{
+                self.tempModel.daysActive.remove(at: index)
+            }
+            
+            index+=1
+        }
+    }
     
     func searchForPrice()->Int{ // if dateString exists, then return the index of the string, else return -1
         //also updates the price value everytime runes. If the date exists, fills the price ; else price=0
@@ -71,6 +83,30 @@ struct DetailedCustomerView: View {
     @State var monthIndex = 0
     var historyView: some View{
         return VStack{
+            
+            HStack(){
+                Spacer()
+                Button(action: {
+                    editButtonPressed.toggle()
+                    if editButtonPressed{
+                        editButtonColor = .blue
+                    }
+                    else{
+                        editButtonColor = .gray
+                    }
+                }, label: {
+                    ZStack{
+                        editButtonColor.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                        
+                        Text("Edit")
+                            .font(.title)
+                            .foregroundColor(.white)
+                    }
+                })
+                .frame(width:80,height:40)
+            }
+            .padding(.horizontal)
+            
             ZStack{
                 Color.blue.edgesIgnoringSafeArea(.all)
                 HStack{
@@ -229,61 +265,345 @@ struct DetailedCustomerView: View {
     @State var editButtonPressed:Bool = false
     @State var editButtonColor:Color = .gray
     var showInfoView:some View{
-        ZStack{
-            Color.blue.opacity(0.3).edgesIgnoringSafeArea(.all)
-            VStack{
-                HStack(){
-                    Spacer()
-                    Button(action: {
-                        editButtonPressed.toggle()
-                        if editButtonPressed{
-                            editButtonColor = .blue
-                        }
-                        else{
-                            editButtonColor = .gray
-                        }
-                    }, label: {
-                        ZStack{
-                            editButtonColor.edgesIgnoringSafeArea(.all).cornerRadius(10)
-                            
-                            Text("Edit")
-                                .font(.title)
-                                .foregroundColor(.white)
-                        }
-                    })
-                    .frame(width:80,height:40)
-                }
-                .padding(.horizontal)
-                
-                if !editButtonPressed{
-                    Text("Name: \(customerModel.name)")
-                        .font(.title)
-                        .padding()
-                        .foregroundColor(.white)
-                    Text("Age: \(customerModel.age)")
-                        .font(.title)
-                        .foregroundColor(.white)
-                    Text("Height: \(customerModel.height)")
-                        .font(.title)
-                        .padding()
-                        .foregroundColor(.white)
-                    Text("Weight: \(customerModel.weight)")
-                        .font(.title)
-                        .foregroundColor(.white)
-                }
-                else{
-                    RoundedTextField1(text_in: "Name", binding_string: $tempModel.name, background_color: .white)
-                    RoundedTextField1Generic(text_in: "Age", binding_string: $tempModel.age, background_color: .white)
-                    RoundedTextField1Generic(text_in: "Height", binding_string: $tempModel.height, background_color: .white)
-                    RoundedTextField1Generic(text_in: "Weight", binding_string: $tempModel.weight, background_color: .white)
-                }
+        VStack{
+            ZStack{
+                Color.blue.opacity(0.3).edgesIgnoringSafeArea(.all)
+                VStack{
+                    HStack(){
+                        Spacer()
+                        Button(action: {
+                            editButtonPressed.toggle()
+                            if editButtonPressed{
+                                editButtonColor = .blue
+                            }
+                            else{
+                                editButtonColor = .gray
+                            }
+                        }, label: {
+                            ZStack{
+                                editButtonColor.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                
+                                Text("Edit")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                            }
+                        })
+                        .frame(width:80,height:40)
+                    }
+                    .padding(.horizontal)
+                    
+                    if !editButtonPressed{
+                        Text("Name: \(customerModel.name)")
+                            .font(.title)
+                            .padding()
+                            .foregroundColor(.white)
+                        Text("Age: \(customerModel.age)")
+                            .font(.title)
+                            .foregroundColor(.white)
+                        Text("Height: \(customerModel.height)")
+                            .font(.title)
+                            .padding()
+                            .foregroundColor(.white)
+                        Text("Weight: \(customerModel.weight)")
+                            .font(.title)
+                            .foregroundColor(.white)
+                    }
+                    else{
+                        RoundedTextField1(text_in: "Name", binding_string: $tempModel.name, background_color: .white)
+                        RoundedTextField1Generic(text_in: "Age", binding_string: $tempModel.age, background_color: .white)
+                        RoundedTextField1Generic(text_in: "Height", binding_string: $tempModel.height, background_color: .white)
+                        RoundedTextField1Generic(text_in: "Weight", binding_string: $tempModel.weight, background_color: .white)
+                    }
 
-                //RoundedTextField1(text_in: <#T##String#>, binding_string: <#T##Binding<String>#>, background_color: <#T##Color#>)
+                    //RoundedTextField1(text_in: <#T##String#>, binding_string: <#T##Binding<String>#>, background_color: <#T##Color#>)
+                }
+                .padding()
             }
+            .cornerRadius(25)
             .padding()
+            
+            ZStack{
+                Color.blue.opacity(0.3).edgesIgnoringSafeArea(.all)//ignoresSafeArea(.all)
+                
+                VStack{
+                    HStack(){
+                        Button(action: { // 1
+                            if editButtonPressed{
+                                if tempModel.daysActive.contains(1){
+                                    removeDay(dayNumber: 1)
+                                }
+                                else{
+                                    tempModel.daysActive.append(1)
+                                }
+                                print(tempModel.daysActive)
+                            }
+                        }, label: {
+                            
+                            if tempModel.daysActive.contains(1){
+                                ZStack{
+                                    editButtonColor.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Pazartesi")
+                                        .font(.title)
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            else {
+                                ZStack{
+                                    Color.white.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Pazartesi")
+                                        .font(.title)
+                                        .foregroundColor(.black)
+                                }
+                                .drawBorder(color: .black)
+                            }
+                        })
+                        .frame(minWidth:120,maxWidth: 150) //width:80,height:40)
+                        .frame(height:40)
+                        .padding()
+                        
+                        Spacer()
+                        Button(action: { // 2
+                            if editButtonPressed{
+                                if tempModel.daysActive.contains(2){
+                                    removeDay(dayNumber: 2)
+                                }
+                                else{
+                                    tempModel.daysActive.append(2)
+                                }
+                                print(tempModel.daysActive)
+                            }
+                        }, label: {
+                            
+                            if tempModel.daysActive.contains(2){
+                                ZStack{
+                                    editButtonColor.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Salı")
+                                        .font(.title)
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            else {
+                                ZStack{
+                                    Color.white.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Salı")
+                                        .font(.title)
+                                        .foregroundColor(.black)
+                                }
+                                .drawBorder(color: .black)
+                            }
+                        })
+                        .frame(minWidth:120,maxWidth: 150) //width:80,height:40)
+                        .frame(height:40)
+                        .padding()
+                    }
+                    .padding(.horizontal)
+                    
+                    HStack(){
+                        Button(action: { // 3
+                            if editButtonPressed{
+                                if tempModel.daysActive.contains(3){
+                                    removeDay(dayNumber: 3)
+                                }
+                                else{
+                                    tempModel.daysActive.append(3)
+                                }
+                                print(tempModel.daysActive)
+                            }
+                        }, label: {
+                            
+                            if tempModel.daysActive.contains(3){
+                                ZStack{
+                                    editButtonColor.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Çarşamba")
+                                        .font(.title)
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            else {
+                                ZStack{
+                                    Color.white.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Çarşamba")
+                                        .font(.title)
+                                        .foregroundColor(.black)
+                                }
+                                .drawBorder(color: .black)
+                            }
+                        })
+                        .frame(minWidth:120,maxWidth: 150) //width:80,height:40)
+                        .frame(height:40)
+                        .padding()
+                        
+                        Spacer()
+                        Button(action: { // 4
+                            if editButtonPressed{
+                                if tempModel.daysActive.contains(4){
+                                    removeDay(dayNumber: 4)
+                                }
+                                else{
+                                    tempModel.daysActive.append(4)
+                                }
+                                print(tempModel.daysActive)
+                            }
+                        }, label: {
+                            
+                            if tempModel.daysActive.contains(4){
+                                ZStack{
+                                    editButtonColor.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Perşembe")
+                                        .font(.title)
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            else {
+                                ZStack{
+                                    Color.white.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Perşembe")
+                                        .font(.title)
+                                        .foregroundColor(.black)
+                                }
+                                .drawBorder(color: .black)
+                            }
+                        })
+                        .frame(minWidth:120,maxWidth: 150) //width:80,height:40)
+                        .frame(height:40)
+                        .padding()
+                    }
+                    .padding(.horizontal)
+                    
+                    HStack(){
+                        Button(action: { // 5
+                            if editButtonPressed{
+                                if tempModel.daysActive.contains(5){
+                                    removeDay(dayNumber: 5)
+                                }
+                                else{
+                                    tempModel.daysActive.append(5)
+                                }
+                                print(tempModel.daysActive)
+                            }
+                        }, label: {
+                            
+                            if tempModel.daysActive.contains(5){
+                                ZStack{
+                                    editButtonColor.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Cuma")
+                                        .font(.title)
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            else {
+                                ZStack{
+                                    Color.white.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Cuma")
+                                        .font(.title)
+                                        .foregroundColor(.black)
+                                }
+                                .drawBorder(color: .black)
+                            }
+                        })
+                        .frame(minWidth:120,maxWidth: 150) //width:80,height:40)
+                        .frame(height:40)
+                        .padding()
+                        
+                        Spacer()
+                        Button(action: { // 6
+                            if editButtonPressed{
+                                if tempModel.daysActive.contains(6){
+                                    removeDay(dayNumber: 6)
+                                }
+                                else{
+                                    tempModel.daysActive.append(6)
+                                }
+                                print(tempModel.daysActive)
+                            }
+                            
+                        }, label: {
+                            
+                            if tempModel.daysActive.contains(6){
+                                ZStack{
+                                    editButtonColor.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Cumartesi")
+                                        .font(.title)
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            else {
+                                ZStack{
+                                    Color.white.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Cumartesi")
+                                        .font(.title)
+                                        .foregroundColor(.black)
+                                }
+                                .drawBorder(color: .black)
+                            }
+                        })
+                        .frame(minWidth:120,maxWidth: 150) //width:80,height:40)
+                        .frame(height:40)
+                        .padding()
+                    }
+                    .padding(.horizontal)
+                    
+                    HStack(){
+                        Button(action: { // 7
+                            if editButtonPressed{
+                                if tempModel.daysActive.contains(7){
+                                    removeDay(dayNumber: 7)
+                                }
+                                else{
+                                    tempModel.daysActive.append(7)
+                                }
+                                print(tempModel.daysActive)
+                            }
+                        }, label: {
+                            
+                            if tempModel.daysActive.contains(7){
+                                ZStack{
+                                    editButtonColor.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Pazar")
+                                        .font(.title)
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            else {
+                                ZStack{
+                                    Color.white.edgesIgnoringSafeArea(.all).cornerRadius(10)
+                                    
+                                    Text("Pazar")
+                                        .font(.title)
+                                        .foregroundColor(.black)
+                                }
+                                .drawBorder(color: .black)
+                            }
+                        })
+                        .frame(minWidth:120,maxWidth: 150) //width:80,height:40)
+                        .frame(height:40)
+                        .padding()
+                        
+                        Spacer()
+
+                    }
+                    .padding(.horizontal)
+                    
+                }
+  
+            }
+            .cornerRadius(25)
+            .padding()
+            
         }
-        .cornerRadius(25)
-        .padding()
         
     }
     

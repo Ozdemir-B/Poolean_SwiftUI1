@@ -71,7 +71,7 @@ struct NoInfoView: View {
                         }
                     .foregroundColor(.gray.opacity(0.85))
                 
-                Text(userViewModel.userModel.institutionId ?? "")
+                //Text(userViewModel.userModel.institutionId ?? "")
                 
                 Button(action:{
                     userViewModel.showSigninPage = true

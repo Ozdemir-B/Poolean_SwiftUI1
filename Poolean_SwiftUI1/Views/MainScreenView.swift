@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainScreenView: View {
+    @State var showAddCustomerView:Bool = false
     // Hold the state for which tab is active/selected
         @State var selection: Int = 0
         let userType:Int = 0 // 0:Admin 1:Regular
@@ -127,9 +128,43 @@ struct CustomerView : View { // <Content:View>: View {
 struct HomeScreenView : View {
     
     //@StateObject var homeScreenViewModel:HomeScreenViewModel = HomeScreenViewModel()
+    @State var showAddCustomerView:Bool = false
     @StateObject var userViewModel:UserViewModel
+    @State var todayNumber:Int = 0
     @State var searchText:String = ""
+    @State var showAllCustomers:Bool = true
+    
     //@State var searchMode:Bool = false
+    
+
+    
+    
+    init(userViewModel:UserViewModel){
+        
+        self._userViewModel = StateObject(wrappedValue: userViewModel)
+        
+        let x:Int = getDayOfWeek() - 1
+        _todayNumber = State(initialValue: x)//getDayOfWeek() ?? -1)
+        // todayNumber:Int , _todayNumber:State<Int>, $todayNumber:Binding<Int>
+        print("TODAY:::::::::: ::: -> :: \(self.todayNumber)")
+    }
+    
+    func getDayOfWeek() -> Int {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let today = dateFormatter.string(from: Date())
+        
+        
+        let formatter  = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        guard let todayDate = formatter.date(from: today) else { return -1 }
+        let myCalendar = Calendar(identifier: .gregorian)
+        let weekDay = myCalendar.component(.weekday, from: todayDate)
+        print(weekDay)
+        return (weekDay ?? -1)
+    }
+    
     var body: some View {
         
         NavigationView {
@@ -142,25 +177,67 @@ struct HomeScreenView : View {
                     CustomerView(id:"berkay özdemir",userViewModel: userViewModel)
                     */
                     
-                    RoundedTextField1WithButton(text: "search", binding_value: $searchText,background_color: .white.opacity(0.9)){
-                        // completion inside
-                        //searchMode.toggle()
-                        print(searchText)
-                        searchText=""
+                    HStack{
+                        RoundedTextField1WithButton(text: "search", binding_value: $searchText,background_color: .white.opacity(0.9)){
+                            // completion inside
+                            //searchMode.toggle()
+                            print(searchText)
+                            searchText=""
+                        }
+                        .padding(.leading)
+                        .padding(.vertical)
+                        
+                        VStack{
+                            Spacer()
+                            Button(action: {
+                                showAllCustomers.toggle()
+                            }, label: {
+                                if showAllCustomers{
+                                    Text("ALL")
+                                        .font(.system(size: 25, weight: .bold, design: .rounded))
+                                        .foregroundColor(.green)
+                                }
+                                else{
+                                    Text("ALL")
+                                        .font(.system(size: 25, weight: .bold, design: .rounded))
+                                        .foregroundColor(.gray)
+                                }
+                                
+                            })
+                            .padding(.trailing)
+                            Text("\(todayNumber)")
+                            Spacer()
+                        }
                     }
-                    .padding(.horizontal)
-                    .padding(.bottom)
+                    
                     
                     if searchText == ""{
                         ForEach(userViewModel.userModel.customers.indices,id: \.self) { indis in
-                            CustomerView(customerModel: $userViewModel.userModel.customers[indis],userViewModel:userViewModel)
+                            if !showAllCustomers{
+                                if userViewModel.userModel.customers[indis].daysActive.contains(todayNumber) {
+                                    CustomerView(customerModel: $userViewModel.userModel.customers[indis],userViewModel:userViewModel)
+                                }
+                            }
+                            else{
+                                CustomerView(customerModel: $userViewModel.userModel.customers[indis],userViewModel:userViewModel)
+                            }
+                            
+                            
                                 
                         }
                     }
                     else {
                         ForEach(userViewModel.userModel.customers.indices,id: \.self) { indis in
                             if userViewModel.userModel.customers[indis].name.contains(searchText){
-                                CustomerView(customerModel: $userViewModel.userModel.customers[indis],userViewModel:userViewModel)
+                                //CustomerView(customerModel: $userViewModel.userModel.customers[indis],userViewModel:userViewModel)
+                                if !showAllCustomers{
+                                    if userViewModel.userModel.customers[indis].daysActive.contains(todayNumber) {
+                                        CustomerView(customerModel: $userViewModel.userModel.customers[indis],userViewModel:userViewModel)
+                                    }
+                                }
+                                else{
+                                    CustomerView(customerModel: $userViewModel.userModel.customers[indis],userViewModel:userViewModel)
+                                }
                             }
     
                         }
@@ -183,7 +260,11 @@ struct HomeScreenView : View {
             }
             .toolbar{
                 ToolbarItem(placement: .navigationBarTrailing, content: {
-                    NavigationLink(destination: AddCustomerView(userViewModel: userViewModel),label: {Label("",systemImage:"plus.circle.fill").foregroundColor(.black).font(.title)} )
+                    Button(action: {showAddCustomerView=true}, label: {Label("",systemImage:"plus.circle.fill").foregroundColor(.black).font(.title)})
+                        .sheet(isPresented: $showAddCustomerView) {
+                            AddCustomerView(userViewModel: userViewModel)
+                            }
+                    //NavigationLink(destination: AddCustomerView(userViewModel: userViewModel),label: {Label("",systemImage:"plus.circle.fill").foregroundColor(.black).font(.title)} )
                 })
             }
             //.navigationBarItems(trailing: )
