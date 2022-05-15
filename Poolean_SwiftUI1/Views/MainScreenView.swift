@@ -18,26 +18,32 @@ struct MainScreenView: View {
             
             // Your native TabView here
             TabView(selection: $selection) {
+                
                 HomeScreenView(userViewModel: userViewModel)
                     .fullBackground(imageName: "bg1")
                     .tag(0)
                     .onAppear(perform:{print("HomeScreenView appeared ----- ")})
                     
+
                 
                 /*SettingsView()
                     .background(.blue)
                     .tag(1)*/
                 
-                if userViewModel.userModel.type == 0 {
-                    SettingsAdminView(userViewModel: userViewModel)
-                        .background(.green)
-                        .tag(1)
-                }
-                if userViewModel.userModel.type == 1 {
-                    SettingsView(userViewModel:userViewModel)
-                        .background(.green)
-                        .tag(1)
-                }
+                
+                 if userViewModel.userModel.type == 0 {
+                     SettingsView(userViewModel: userViewModel)
+                         .background(.green)
+                         .tag(1)
+                 }
+                 if userViewModel.userModel.type == 1 {
+                     SettingsView(userViewModel:userViewModel)
+                         .background(.green)
+                         .tag(1)
+                 }
+                 
+                
+                
             }
             .overlay( // Overlay the custom TabView component here
                 Color.white // Base color for Tab Bar

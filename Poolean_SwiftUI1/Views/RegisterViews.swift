@@ -23,6 +23,23 @@ struct LoginView: View {
     
     @StateObject var userViewModel:UserViewModel
     
+    func controlLogin(){
+        if true{//userViewModel.isFirestoreLoginDone{//userViewModel.isFirestoreLoginDone{
+            if userViewModel.isUserFilled{
+                print("yes yes yes yes yes yes yes yes yes")
+                presentationMode.wrappedValue.dismiss()
+            }
+            else {
+                print("inside else :: ")
+                //print("register view result :: \(result)")
+                print("userViewModel.isUserFilled :: \(userViewModel.isUserFilled)")
+                print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+                alertShow = true
+            }
+        }
+    }
+    
+
     var body: some View {
         VStack{
             
@@ -54,17 +71,23 @@ struct LoginView: View {
             SecureFieldWithButton(text:"password",binding_value: $password){
                 
                 if true {
+
                     
                     let result = userViewModel.firestoreLogin(institutionId: institution_id, password: password)
+                    //let result = userViewModel.firestoreLogin(institutionId: institution_id, password: password)
+                    //print("register view result :: \(result)")
+                    print("userViewModel.isUserFilled :: \(userViewModel.isUserFilled)")
                     
-                    if result{
-                        print("yes yes yes yes yes yes yes yes yes")
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                    else {
-                        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-                        alertShow = true
-                    }
+                    print("before sleep(2)")
+                    sleep(2)
+                    print("after sleep(2)")
+                    
+                    //print("register view result :: \(result)")
+                    print("userViewModel.isUserFilled :: \(userViewModel.isUserFilled)")
+                    
+                    controlLogin()
+                    
+                    
                     //alertShow = true
                 }
                 

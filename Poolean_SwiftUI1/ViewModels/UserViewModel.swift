@@ -18,7 +18,7 @@ class UserViewModel: ObservableObject { // CONNECTS FIREBASE AND FETCHES USER DA
     @Published var isUserFilled:Bool = false
     //@Published var userDataResponse:
     @Published var userModel:UserModel = UserModel()//returnRandomUserModel(name: "Ahmet Kaya", institution_id: "Ahmet_Havuz", password: "Ahmet123", email: "Ahmet@gmail.com", type: 0) //UserModel()
-    
+    @Published var usersList:[UserModel] = []
     
     func returnRandomUserModel(name:String,institution_id:String, password:String,email:String,type:Int)->UserModel {
         var user:UserModel = UserModel()
@@ -38,7 +38,7 @@ class UserViewModel: ObservableObject { // CONNECTS FIREBASE AND FETCHES USER DA
         let db = Firestore.firestore()
         let ref = db.collection("Users").document(institutionId)
         
-        ref.setData([password:["id":UUID().uuidString,"name":name,"password":password,"email":email,"institutionId":institutionId,"type":type]],merge:true) {
+        ref.setData([password:["id":UUID().uuidString,"name":name,"password":password,"email":email,"institutionId":institutionId,"type":0]],merge:true) {
             error in
             if let error = error {
                 print("------------------ error-addNewInstitution-------------------")
@@ -50,13 +50,13 @@ class UserViewModel: ObservableObject { // CONNECTS FIREBASE AND FETCHES USER DA
         
     }
     
-    func addRegularUser(name:String,institutionId:String,password:String,email:String){
+    func addRegularUser(name:String,institutionId:String,password:String,email:String,type:Int){
         let db = Firestore.firestore()
         let ref = db.collection("Users").document(institutionId)
         
         
         
-        ref.setData([password:["id":UUID().uuidString,"name":name,"password":password,"email":email,"institutionId":institutionId,"type":1]],merge:true) {
+        ref.setData([password:["id":UUID().uuidString,"name":name,"password":password,"email":email,"institutionId":institutionId,"type":type]],merge:true) {
             error in
             if let error = error {
                 print("------------------ error-addNewInstitution-------------------")
@@ -120,11 +120,72 @@ class UserViewModel: ObservableObject { // CONNECTS FIREBASE AND FETCHES USER DA
                             
                             
                         }
+                        resultValue = true
                     }
                 }
             }
         })
         return resultValue
+    }
+    
+    func fetchUsersOfInstitution() -> [UserModel] {
+        //var usersList:[UserModel] = []
+        let institutionId = self.userModel.institutionId
+        let password = self.userModel.password
+        
+        let db = Firestore.firestore()
+        //let ref = db.collection("Users/\(institutionId)")
+        let ref = db.collection("Users")
+        var returnValue:Bool = false
+        
+        ref.getDocuments(completion: {
+            snapshot, error in
+            
+            guard error == nil else{
+                print("-------------------ERROR---------------------------------")
+                print(error!.localizedDescription)
+                print("----------------!!!ERROR!!!------------------------------")
+                return
+            }
+            
+            if let snapshot = snapshot {
+                print("-------------------SNAPSHOT---------------------------------")
+                for document in snapshot.documents{
+                    //print("----------------------------------------------------")
+                    //let data = document.data()
+                    
+                    if document.documentID == institutionId{
+                        //print("documentId:\(document.documentID)")
+                        let data = document.data()
+                        for d in data{
+                            if d.key != password{
+
+                                let d_forced = d.value as? [String:AnyObject] // type casting like in C#.Net
+                                //print(d_forced!["name"] as! String)
+                                //let data_value = d.value ?? []
+                                self.usersList.append(UserModel(id: d_forced!["id"] as! String, name: d_forced!["name"] as! String, institutionId: d_forced!["institutionId"] as! String, password: d_forced!["password"] as! String, type: d_forced!["type"] as! Int, email: d_forced!["email"] as! String))
+                                print("--userslist--")
+                                //print(self.usersList)
+
+                                returnValue = true
+                            }
+                        }
+                    }
+                    //print(data)
+                    //print("----------------------------------------------------")
+                }
+                print("----------------!!!SNAPSHOT!!!------------------------------")
+                print("----------------USERS LIST :: ")
+                //print(self.usersList)
+                print("----------------RETURN VALUE _> -> :: \(returnValue)")
+                return
+            }
+            print("----------------RETURN VALUE 222_> -> :: \(returnValue)")
+            return
+            
+        })
+        print("----------------RETURN VALUE 333_> -> :: \(returnValue)") // doesn't print that. so that means this function never runs the code below.
+        return self.usersList
     }
     
     func updateCustomerInfo(new:CustomerModel){
@@ -153,16 +214,29 @@ class UserViewModel: ObservableObject { // CONNECTS FIREBASE AND FETCHES USER DA
     }
     
     
+    @Published var isFirestoreLoginDone:Bool = false
     
     func firestoreLogin(institutionId:String, password:String) -> Bool {
+        self.isFirestoreLoginDone = false
         let db = Firestore.firestore()
         //let ref = db.collection("Users/\(institutionId)")
         let ref = db.collection("Users")
         var returnValue:Bool = false
         
-        ref.getDocuments(completion: {
+        /*
+         
+         DispatchQueue.global().sync {
+                     DispatchQueue.main.async {
+                         
+                     }
+                 
+                 }
+         
+         */
+        
+        ref.getDocuments(completion:{
             snapshot, error in
-            
+
             guard error == nil else{
                 print("-------------------ERROR---------------------------------")
                 print(error!.localizedDescription)
@@ -191,15 +265,25 @@ class UserViewModel: ObservableObject { // CONNECTS FIREBASE AND FETCHES USER DA
                                 self.userModel = UserModel(id: d_forced!["id"] as! String, name: d_forced!["name"] as! String, institutionId: d_forced!["institutionId"] as! String, password: d_forced!["password"] as! String, type: d_forced!["type"] as! Int, email: d_forced!["email"] as! String)
                                 self.fetchCustomersOfInstitution(institutionId: institutionId)
                                 //print(self.userModel.customers)
+                                print("-----firestoreLogin() -> isUserFilled 0:: \(self.isUserFilled) ----------")
                                 self.isUserFilled = true
+                                print("-----firestoreLogin() -> isUserFilled 1:: \(self.isUserFilled) ----------")
                                 returnValue = true
+                                self.isUserFilled = true
+                                //self.isFirestoreLoginDone = true
+                                break
                             }
+                            print("-----firestoreLogin() -> isUserFilled 2:: \(self.isUserFilled) ----------")
                         }
+                        print("-----firestoreLogin() -> isUserFilled 2.5:: \(self.isUserFilled) ----------")
                     }
                     //print(data)
-                    print("----------------------------------------------------")
+                    print("-----firestoreLogin() -> isUserFilled 3:: \(self.isUserFilled) ----------")
                 }
+                print("-----firestoreLogin() -> isUserFilled 4:: \(self.isUserFilled) ----------")
             }
+            print("-----firestoreLogin() -> isUserFilled 5:: \(self.isUserFilled) ----------")
+            self.isFirestoreLoginDone = true
         })
         return returnValue
     }

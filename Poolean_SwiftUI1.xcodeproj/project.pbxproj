@@ -11,6 +11,8 @@
 		E302DA2C28286B6A008E87F1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E302DA2B28286B6A008E87F1 /* GoogleService-Info.plist */; };
 		E31132EF280B7E4A00FD14D2 /* CustomerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31132EE280B7E4A00FD14D2 /* CustomerViewModel.swift */; };
 		E31568292805C32A008F7D46 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31568282805C32A008F7D46 /* UserViewModel.swift */; };
+		E31B44D52830196C00EABE66 /* AddNewUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31B44D42830196C00EABE66 /* AddNewUserView.swift */; };
+		E31B44D72830355C00EABE66 /* ShowAllUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31B44D62830355C00EABE66 /* ShowAllUsersView.swift */; };
 		E324A177280E997C0026AAB6 /* AddCustomerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E324A176280E997C0026AAB6 /* AddCustomerView.swift */; };
 		E33F13EF27F252A000FD31C5 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33F13EE27F252A000FD31C5 /* CustomViews.swift */; };
 		E33F13F127F253F900FD31C5 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33F13F027F253F900FD31C5 /* MainScreenView.swift */; };
@@ -35,6 +37,8 @@
 		E302DA2B28286B6A008E87F1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E31132EE280B7E4A00FD14D2 /* CustomerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerViewModel.swift; sourceTree = "<group>"; };
 		E31568282805C32A008F7D46 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		E31B44D42830196C00EABE66 /* AddNewUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewUserView.swift; sourceTree = "<group>"; };
+		E31B44D62830355C00EABE66 /* ShowAllUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAllUsersView.swift; sourceTree = "<group>"; };
 		E324A176280E997C0026AAB6 /* AddCustomerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomerView.swift; sourceTree = "<group>"; };
 		E33F13EE27F252A000FD31C5 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		E33F13F027F253F900FD31C5 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainScreenView.swift; path = Poolean_SwiftUI1/Views/MainScreenView.swift; sourceTree = SOURCE_ROOT; };
@@ -153,6 +157,8 @@
 				E39759BE27ED9AE50030EB96 /* ContentView.swift */,
 				E33F13F027F253F900FD31C5 /* MainScreenView.swift */,
 				E324A176280E997C0026AAB6 /* AddCustomerView.swift */,
+				E31B44D42830196C00EABE66 /* AddNewUserView.swift */,
+				E31B44D62830355C00EABE66 /* ShowAllUsersView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -279,11 +285,13 @@
 				E31568292805C32A008F7D46 /* UserViewModel.swift in Sources */,
 				E3F3C78928015883000CBB50 /* SettingsView.swift in Sources */,
 				E33F13EF27F252A000FD31C5 /* CustomViews.swift in Sources */,
+				E31B44D72830355C00EABE66 /* ShowAllUsersView.swift in Sources */,
 				E39610E827F30A0B00E950D4 /* RegisterViews.swift in Sources */,
 				E39759BD27ED9AE50030EB96 /* Poolean_SwiftUI1App.swift in Sources */,
 				E3E204FF2808EB5D00943591 /* HomeScreenViewModel.swift in Sources */,
 				E33F13F127F253F900FD31C5 /* MainScreenView.swift in Sources */,
 				E39610E627F2F4ED00E950D4 /* ExtensionsView.swift in Sources */,
+				E31B44D52830196C00EABE66 /* AddNewUserView.swift in Sources */,
 				E3E5A0502803072100B22629 /* UserModel.swift in Sources */,
 				E38D5121282BB36F00281219 /* DetailedCustomerView.swift in Sources */,
 				E39759CB27EDBCAA0030EB96 /* Network.swift in Sources */,

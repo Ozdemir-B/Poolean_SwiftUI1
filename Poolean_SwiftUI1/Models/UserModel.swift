@@ -16,7 +16,7 @@ struct UserModel:Codable, Identifiable {
     var name:String
     var institutionId:String
     var password:String // String?
-    var email:String?
+    var email:String
     //var customerViewModels:[CustomerViewModel] = []
     var customers:[CustomerModel]
     //var customers:[String] = [] // Array of strings(UUID().uuidString)    //[CustomerModel?] = [] // List of Customer UUID().uuidString typed Strings
@@ -37,11 +37,11 @@ struct UserModel:Codable, Identifiable {
     init(){
         self.id = UUID().uuidString
         self.type = 0
-        self.name = "Berkay Ozdemir Admin"
-        self.institutionId = "Berkay Kapalı Havuz"
-        self.password = "Berkay123"
-        self.email = "Berkay@gmail.com"
-        self.customers = [CustomerModel(),CustomerModel(),CustomerModel(),CustomerModel(),CustomerModel(),CustomerModel()]
+        self.name = "Name"
+        self.institutionId = "Institution"
+        self.password = "Password"
+        self.email = "name@gmail.com"
+        self.customers = []//[CustomerModel(),CustomerModel(),CustomerModel(),CustomerModel(),CustomerModel(),CustomerModel()]
     }
     
 }

@@ -145,6 +145,23 @@ struct RoundedTextField1Generic<T> : View { // for numbers
 }
 
 
+struct SettingsSegmentsView : View {
+    
+    
+    var body:some View{
+        ZStack{
+            RoundedRectangle(cornerRadius: 25)
+                //.frame(width: 300, height: 300)
+                //.frame(minHeight:300)
+                .foregroundColor(Color(0xf2f1f6))
+            VStack{
+                
+            }
+        }
+    }
+}
+
+
 struct RoundedTextField1 : View {
     
     @State var text_in : String
