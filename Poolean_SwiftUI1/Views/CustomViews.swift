@@ -361,10 +361,10 @@ struct SecureFieldWithButton : View {
     //@Binding var binding_string:String
     @State var binding_string:Binding<String>
     //Binding<String> = $String
-    init(text:String,binding_value:Binding<String>, action:@escaping(()->Void)){
+    init(text:String,binding_value:Binding<String>, action:(()->Void)? ){
         text_in = text
         self.binding_string = binding_value
-        btnAction = action
+        btnAction = action!
     }
     
     var body: some View{

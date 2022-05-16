@@ -16,9 +16,10 @@ class UserViewModel: ObservableObject { // CONNECTS FIREBASE AND FETCHES USER DA
     @Published var showLoginPage:Bool = false
     @Published var showSigninPage:Bool = false
     @Published var isUserFilled:Bool = false
+    @Published var showAllUsersAppeared:Bool = false
     //@Published var userDataResponse:
     @Published var userModel:UserModel = UserModel()//returnRandomUserModel(name: "Ahmet Kaya", institution_id: "Ahmet_Havuz", password: "Ahmet123", email: "Ahmet@gmail.com", type: 0) //UserModel()
-    @Published var usersList:[UserModel] = []
+    @Published var usersList:[UserModel] = [UserModel(),UserModel()]
     
     func returnRandomUserModel(name:String,institution_id:String, password:String,email:String,type:Int)->UserModel {
         var user:UserModel = UserModel()
@@ -128,7 +129,57 @@ class UserViewModel: ObservableObject { // CONNECTS FIREBASE AND FETCHES USER DA
         return resultValue
     }
     
-    func fetchUsersOfInstitution() -> [UserModel] {
+    func fetchUsersOfInstitution() -> Bool{
+        self.usersList.removeAll()
+        let institutionId = self.userModel.institutionId
+        var custModelArray:[CustomerModel] = []
+        let db = Firestore.firestore()
+        let ref = db.collection("Users")
+        var resultValue = false
+        ref.getDocuments(completion: {
+            snapshot, error in
+            self.userModel.customers.removeAll()
+            guard error == nil else{
+                print("------------- error ------------")
+                print(error!.localizedDescription)
+                return
+            }
+            
+            if let snapshot = snapshot {
+                
+                for document in snapshot.documents {
+                    if document.documentID == institutionId{
+                        
+                        let data0 = document.data()
+                        
+                        for d in data0{
+                            if d.key != self.userModel.password{
+                                let d_forced = d.value as? [String:AnyObject] // type casting like in C#.Net
+                                print(d_forced!["name"] as! String)
+                                //let data = d.value as? [String:AnyObject]
+                                self.usersList.append(UserModel(id: d_forced!["id"] as! String, name: d_forced!["name"] as! String, institutionId: d_forced!["institutionId"] as! String, password: d_forced!["password"] as! String, type: d_forced!["type"] as! Int, email: d_forced!["email"] as! String))
+                                print("--userslist--")
+                                resultValue = true
+                                /*
+                                let data = document.data() as! [String:AnyObject]
+                                
+                                self.userModel.customers.append(CustomerModel(id: data["id"] as! String, name: data["name"] as! String, age: data["age"] as! Int, weight: data["weight"] as! Double, height: data["height"] as! Double, daysActive: data["daysActive"] as! [Int], monthsPayed: data["monthsPayed"] as! [String]))
+                                 */
+                                //print(custModelArray)
+                            }
+                            
+                            
+                        }
+                        resultValue = true
+                    }
+                }
+            }
+        })
+        return resultValue
+    }
+    
+    
+    func fetchUsersOfInstitution2() -> [UserModel] {
         //var usersList:[UserModel] = []
         let institutionId = self.userModel.institutionId
         let password = self.userModel.password
@@ -204,34 +255,52 @@ class UserViewModel: ObservableObject { // CONNECTS FIREBASE AND FETCHES USER DA
         }
     }
     
+    func updateLocalUsersList(new:UserModel){
+        for userIndex in self.usersList.indices{
+            if self.usersList[userIndex].id == new.id {
+                self.usersList.remove(at: userIndex)
+                self.usersList.append(new)
+            }
+        }
+    }
     
-    
-    func fetchUsersFirestore(){
+    func updateUserInfo(new:UserModel){
         let db = Firestore.firestore()
         let ref = db.collection("Users").document(self.userModel.institutionId)
         
         
+        
+        //ref.updateData([customerModel.id:[]])
+        //self.userModel.customers.append(CustomerModel(id: id, name: name, age: age, weight: weight, height: height, daysActive: daysActive, monthsPayed: monthsPayed))
+        ref.updateData( [new.password:["id": new.id, "name": new.name, "password":new.password, "institutionId":new.institutionId, "type":new.type,"email":new.email]] ){
+            error in
+            if let error = error {
+                print("------------------ error-addNewInstitution-------------------")
+                print(error.localizedDescription)
+                print("-------------------------------------------------------------")
+            }
+        }
+    }
+    
+    func updatePersonalInfo(new:UserModel){
+        self.userModel = new
+        
+        self.updateUserInfo(new: self.userModel)
     }
     
     
-    @Published var isFirestoreLoginDone:Bool = false
-    
-    func firestoreLogin(institutionId:String, password:String) -> Bool {
-        self.isFirestoreLoginDone = false
+
+    func firestoreLogin2(institutionId:String) -> Bool {
+        
         let db = Firestore.firestore()
         //let ref = db.collection("Users/\(institutionId)")
         let ref = db.collection("Users")
         var returnValue:Bool = false
-        
         /*
-         
          DispatchQueue.global().sync {
                      DispatchQueue.main.async {
-                         
                      }
-                 
                  }
-         
          */
         
         ref.getDocuments(completion:{
@@ -241,6 +310,77 @@ class UserViewModel: ObservableObject { // CONNECTS FIREBASE AND FETCHES USER DA
                 print("-------------------ERROR---------------------------------")
                 print(error!.localizedDescription)
                 print("----------------------------------------------------")
+                self.loginFetchState = 2 // error
+                return
+            }
+            
+            if let snapshot = snapshot {
+                for document in snapshot.documents{
+                    //print("----------------------------------------------------")
+                    //let data = document.data()
+                    
+                    if document.documentID == institutionId{
+                        print("documentId:\(document.documentID)")
+                        let data = document.data()
+                        for d in data{
+                            if true{//d.key == password{
+                                print("d.key:\(d.key) , value:::")
+                                print(d.value)
+                                print(type(of: d))
+                                print(type(of: d.value))
+                                
+                                let d_forced = d.value as? [String:AnyObject] // type casting like in C#.Net
+                                print(d_forced!["name"] as! String)
+                                //let data_value = d.value ?? []
+                                self.usersList.append(UserModel(id: d_forced!["id"] as! String, name: d_forced!["name"] as! String, institutionId: d_forced!["institutionId"] as! String, password: d_forced!["password"] as! String, type: d_forced!["type"] as! Int, email: d_forced!["email"] as! String))
+                                //self.fetchCustomersOfInstitution(institutionId: institutionId)
+                                //print(self.userModel.customers)
+                                returnValue = true
+                                
+                                //self.isFirestoreLoginDone = true
+                                
+                            }
+                            // fail
+                            
+                        }
+                        
+                    }
+                    //print(data)
+                    
+                }
+            }
+            
+            
+        })
+        return returnValue
+    }
+    
+
+    
+    
+    @Published var isFirestoreLoginDone:Bool = false
+    @Published var loginFetchState:Int = 0
+    func firestoreLogin(institutionId:String, password:String) -> Bool {
+        self.isFirestoreLoginDone = false
+        let db = Firestore.firestore()
+        //let ref = db.collection("Users/\(institutionId)")
+        let ref = db.collection("Users")
+        var returnValue:Bool = false
+        /*
+         DispatchQueue.global().sync {
+                     DispatchQueue.main.async {
+                     }
+                 }
+         */
+        
+        ref.getDocuments(completion:{
+            snapshot, error in
+
+            guard error == nil else{
+                print("-------------------ERROR---------------------------------")
+                print(error!.localizedDescription)
+                print("----------------------------------------------------")
+                self.loginFetchState = 2 // error
                 return
             }
             
@@ -264,15 +404,18 @@ class UserViewModel: ObservableObject { // CONNECTS FIREBASE AND FETCHES USER DA
                                 //let data_value = d.value ?? []
                                 self.userModel = UserModel(id: d_forced!["id"] as! String, name: d_forced!["name"] as! String, institutionId: d_forced!["institutionId"] as! String, password: d_forced!["password"] as! String, type: d_forced!["type"] as! Int, email: d_forced!["email"] as! String)
                                 self.fetchCustomersOfInstitution(institutionId: institutionId)
+                                self.fetchUsersOfInstitution()
                                 //print(self.userModel.customers)
                                 print("-----firestoreLogin() -> isUserFilled 0:: \(self.isUserFilled) ----------")
                                 self.isUserFilled = true
                                 print("-----firestoreLogin() -> isUserFilled 1:: \(self.isUserFilled) ----------")
                                 returnValue = true
                                 self.isUserFilled = true
+                                self.loginFetchState = 1 // success
                                 //self.isFirestoreLoginDone = true
                                 break
                             }
+                            self.loginFetchState = -1 // fail
                             print("-----firestoreLogin() -> isUserFilled 2:: \(self.isUserFilled) ----------")
                         }
                         print("-----firestoreLogin() -> isUserFilled 2.5:: \(self.isUserFilled) ----------")

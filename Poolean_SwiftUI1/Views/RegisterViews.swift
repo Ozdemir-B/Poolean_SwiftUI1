@@ -20,6 +20,7 @@ struct LoginView: View {
     @State var institution_id = ""
     @State var password = ""
     @State var alertShow:Bool = false
+    @State var messageText:String = ""
     
     @StateObject var userViewModel:UserViewModel
     
@@ -54,21 +55,45 @@ struct LoginView: View {
             .frame(maxWidth:.infinity)
             .padding(.bottom)
             
-            Picker(selection: $selected, label: Text(""), content: {
-                            Text("Admin").tag(0)
-                            Text("Worker").tag(1)
-            }).pickerStyle(.segmented)
-                .padding()
-                .padding(.horizontal,25)
+            /*
+             Picker(selection: $selected, label: Text(""), content: {
+                             Text("Admin").tag(0)
+                             Text("Worker").tag(1)
+             }).pickerStyle(.segmented)
+                 .padding()
+                 .padding(.horizontal,25)
+             */
                 
 
             
             Spacer()
             
+            HStack{
+                if messageText == "Logged In"{
+                    Text(messageText)
+                        .font(.system(size: 30))
+                        .foregroundColor(.green)
+                }
+                else if messageText == "Try Again!!"{
+                    Text(messageText)
+                        .font(.system(size: 30))
+                        .foregroundColor(.red)
+                }
+                else {
+                    Text(messageText)
+                        .font(.system(size: 30))
+                        .foregroundColor(.gray)
+                }
+                    
+            }
+            
+            Spacer()
             
             RoundedTextField1(text_in: "institutionId", binding_string: $institution_id)
             
             SecureFieldWithButton(text:"password",binding_value: $password){
+                
+                messageText = "Loading..."
                 
                 if true {
 
@@ -79,13 +104,27 @@ struct LoginView: View {
                     print("userViewModel.isUserFilled :: \(userViewModel.isUserFilled)")
                     
                     print("before sleep(2)")
-                    sleep(2)
+                    //sleep(2)
                     print("after sleep(2)")
                     
                     //print("register view result :: \(result)")
                     print("userViewModel.isUserFilled :: \(userViewModel.isUserFilled)")
                     
-                    controlLogin()
+                    if true{//userViewModel.isFirestoreLoginDone{//userViewModel.isFirestoreLoginDone{
+                        if userViewModel.loginFetchState == 1{//userViewModel.isUserFilled{
+                            messageText = "Logged In"
+                            print("yes yes yes yes yes yes yes yes yes")
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                        else if userViewModel.loginFetchState == -1 {
+                            messageText = "Try Again!!"
+                            print("inside else :: ")
+                            //print("register view result :: \(result)")
+                            print("userViewModel.isUserFilled :: \(userViewModel.isUserFilled)")
+                            print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+                            //alertShow = true
+                        }
+                    }
                     
                     
                     //alertShow = true
@@ -168,6 +207,7 @@ struct SigninView: View {
                             Text("Pro").tag(2)
                         }).pickerStyle(SegmentedPickerStyle())
                 .padding()
+            
             Spacer()
             
             RoundedTextField1(text_in: "Name, Surname", binding_string: $name)

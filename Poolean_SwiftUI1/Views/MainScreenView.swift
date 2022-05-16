@@ -22,7 +22,10 @@ struct MainScreenView: View {
                 HomeScreenView(userViewModel: userViewModel)
                     .fullBackground(imageName: "bg1")
                     .tag(0)
-                    .onAppear(perform:{print("HomeScreenView appeared ----- ")})
+                    .onAppear(perform:{
+                        print("HomeScreenView appeared ----- ")
+                        
+                    })
                     
 
                 
@@ -149,10 +152,12 @@ struct HomeScreenView : View {
         
         self._userViewModel = StateObject(wrappedValue: userViewModel)
         
-        let x:Int = getDayOfWeek() - 1
-        _todayNumber = State(initialValue: x)//getDayOfWeek() ?? -1)
-        // todayNumber:Int , _todayNumber:State<Int>, $todayNumber:Binding<Int>
-        print("TODAY:::::::::: ::: -> :: \(self.todayNumber)")
+        
+         let x:Int = getDayOfWeek() - 1
+         _todayNumber = State(initialValue: x)//getDayOfWeek() ?? -1)
+         // todayNumber:Int , _todayNumber:State<Int>, $todayNumber:Binding<Int>
+         print("TODAY:::::::::: ::: -> :: \(self.todayNumber)")
+         
     }
     
     func getDayOfWeek() -> Int {
@@ -287,8 +292,11 @@ struct HomeScreenView : View {
         
         
         
+        
             
     }
+
+    
         //.onDisappear(perform: <#T##(() -> Void)?#>)
     
 }

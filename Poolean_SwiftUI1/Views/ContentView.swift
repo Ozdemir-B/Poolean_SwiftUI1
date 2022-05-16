@@ -68,6 +68,9 @@ struct NoInfoView: View {
                     .padding([.trailing,.leading],50)
                     .sheet(isPresented: $userViewModel.showLoginPage) {
                         LoginView(userViewModel: userViewModel)
+                            .onAppear(perform: {
+                                print("login Page appeared")
+                            })
                         }
                     .foregroundColor(.gray.opacity(0.85))
                 
