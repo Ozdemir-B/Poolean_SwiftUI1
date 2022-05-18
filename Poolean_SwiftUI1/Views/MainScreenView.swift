@@ -134,14 +134,118 @@ struct CustomerView : View { // <Content:View>: View {
     }
 }
 
+struct DayPickerView: View{
+    @Environment(\.presentationMode) var presentationMode
+    @Binding var day:Int
+    
+    var body: some View{
+        VStack(alignment:.center){
+            
+            HStack{
+                Text("Pick a Day")
+                    .font(.system(size: 40, weight: .bold, design: .rounded))
+                    .padding([.top,.leading],10)
+                    .padding(.top)
+                Spacer()
+            }
+            .padding()
+            
+            Spacer()
+            
+            Button(action: {
+                day = 0
+                presentationMode.wrappedValue.dismiss()
+                
+            }, label: {
+                Text("Tüm Günler")
+                    .font(.system(size: 35, weight: .bold, design: .rounded))
+                    .foregroundColor(.green)
+            })
+            
+            VStack{
+                Button(action: {
+                    day = 1
+                    presentationMode.wrappedValue.dismiss()
+                    
+                }, label: {
+                    Text("Pazartesi")
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                })
+                .padding()
+                
+                Button(action: {
+                    day = 2
+                    presentationMode.wrappedValue.dismiss()
+                    
+                }, label: {
+                    Text("Salı")
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                })
+                
+                Button(action: {
+                    day = 3
+                    presentationMode.wrappedValue.dismiss()
+                    
+                }, label: {
+                    Text("Çarşamba")
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                })
+                .padding()
+                
+                Button(action: {
+                    day = 4
+                    presentationMode.wrappedValue.dismiss()
+                    
+                }, label: {
+                    Text("Perşembe")
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                })
+                
+                Button(action: {
+                    day = 5
+                    presentationMode.wrappedValue.dismiss()
+                    
+                }, label: {
+                    Text("Cuma")
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                })
+                .padding()
+                
+                Button(action: {
+                    day = 6
+                    presentationMode.wrappedValue.dismiss()
+                    
+                }, label: {
+                    Text("Cumartesi")
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                })
+                
+                
+                Button(action: {
+                    day = 7
+                    presentationMode.wrappedValue.dismiss()
+                    
+                }, label: {
+                    Text("Pazar")
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                })
+                .padding()
+            }
+            
+            Spacer()
+            
+        }
+    }
+}
+
 struct HomeScreenView : View {
     
     //@StateObject var homeScreenViewModel:HomeScreenViewModel = HomeScreenViewModel()
     @State var showAddCustomerView:Bool = false
     @StateObject var userViewModel:UserViewModel
-    @State var todayNumber:Int = 0
+    @State var todayNumber:Int = 1
     @State var searchText:String = ""
-    @State var showAllCustomers:Bool = true
+    @State var showAllCustomers:Bool = false
     
     //@State var searchMode:Bool = false
     
@@ -154,7 +258,7 @@ struct HomeScreenView : View {
         
         
          let x:Int = getDayOfWeek() - 1
-         _todayNumber = State(initialValue: x)//getDayOfWeek() ?? -1)
+         //_todayNumber = State(initialValue: x)//getDayOfWeek() ?? -1)
          // todayNumber:Int , _todayNumber:State<Int>, $todayNumber:Binding<Int>
          print("TODAY:::::::::: ::: -> :: \(self.todayNumber)")
          
@@ -203,20 +307,53 @@ struct HomeScreenView : View {
                             Button(action: {
                                 showAllCustomers.toggle()
                             }, label: {
-                                if showAllCustomers{
+                                if todayNumber == 0 {
                                     Text("ALL")
                                         .font(.system(size: 25, weight: .bold, design: .rounded))
                                         .foregroundColor(.green)
                                 }
-                                else{
-                                    Text("ALL")
+                                if todayNumber == 1 {
+                                    Text("Pzrts")
                                         .font(.system(size: 25, weight: .bold, design: .rounded))
-                                        .foregroundColor(.gray)
+                                        .foregroundColor(.green)
+                                }
+                                if todayNumber == 2 {
+                                    Text("Salı")
+                                        .font(.system(size: 25, weight: .bold, design: .rounded))
+                                        .foregroundColor(.green)
+                                }
+                                if todayNumber == 3 {
+                                    Text("Çarş")
+                                        .font(.system(size: 25, weight: .bold, design: .rounded))
+                                        .foregroundColor(.green)
+                                }
+                                if todayNumber == 4 {
+                                    Text("Perş")
+                                        .font(.system(size: 25, weight: .bold, design: .rounded))
+                                        .foregroundColor(.green)
+                                }
+                                if todayNumber == 5 {
+                                    Text("Cuma")
+                                        .font(.system(size: 25, weight: .bold, design: .rounded))
+                                        .foregroundColor(.green)
+                                }
+                                if todayNumber == 6 {
+                                    Text("Cmrts")
+                                        .font(.system(size: 25, weight: .bold, design: .rounded))
+                                        .foregroundColor(.green)
+                                }
+                                if todayNumber == 7 {
+                                    Text("Pazar")
+                                        .font(.system(size: 25, weight: .bold, design: .rounded))
+                                        .foregroundColor(.green)
                                 }
                                 
                             })
                             .padding(.trailing)
-                            Text("\(todayNumber)")
+                            .sheet(isPresented: $showAllCustomers) {
+                                DayPickerView(day: $todayNumber)
+                                }
+                            //Text("\(todayNumber)")
                             Spacer()
                         }
                     }
@@ -224,7 +361,7 @@ struct HomeScreenView : View {
                     
                     if searchText == ""{
                         ForEach(userViewModel.userModel.customers.indices,id: \.self) { indis in
-                            if !showAllCustomers{
+                            if todayNumber != 0{
                                 if userViewModel.userModel.customers[indis].daysActive.contains(todayNumber) {
                                     CustomerView(customerModel: $userViewModel.userModel.customers[indis],userViewModel:userViewModel)
                                 }
@@ -241,7 +378,7 @@ struct HomeScreenView : View {
                         ForEach(userViewModel.userModel.customers.indices,id: \.self) { indis in
                             if userViewModel.userModel.customers[indis].name.contains(searchText){
                                 //CustomerView(customerModel: $userViewModel.userModel.customers[indis],userViewModel:userViewModel)
-                                if !showAllCustomers{
+                                if todayNumber != 0{
                                     if userViewModel.userModel.customers[indis].daysActive.contains(todayNumber) {
                                         CustomerView(customerModel: $userViewModel.userModel.customers[indis],userViewModel:userViewModel)
                                     }

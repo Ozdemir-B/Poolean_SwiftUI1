@@ -151,7 +151,7 @@ struct PersonalInfoView:View{
 
             }
         }
-        .cornerRadius(25)
+        .cornerRadius(10)
         .padding()
     }
 }
@@ -310,6 +310,7 @@ struct SettingsView: View {
                                 ZStack{
                                     Color.blue.opacity(0.5).edgesIgnoringSafeArea(.all)
                                     VStack(alignment:.center){
+                                        Spacer()
                                         Text("Kocaeli University 2022")
                                             .foregroundColor(.white)
                                             .font(.title)
@@ -317,7 +318,12 @@ struct SettingsView: View {
                                         Text("Berkay Özdemir - Alper Ayhan")
                                             .foregroundColor(.white)
                                             .font(.title2)
-                                            
+                                        
+                                        Spacer()
+                                        Text("Verison 1.0")
+                                            .foregroundColor(.white)
+                                            .font(.title3)
+                                            .padding()
                                         
                                     }
                                 }
